@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="AuraSpace" />
+<meta name="theme-color" content="#05070d" />
+<title>AuraSpace — Your mood, your space.</title>
+<style>
+:root{
+  --bg:#05070d;
+  --bg2:#090d18;
+  --text:#f5f7fb;
+  --muted:rgba(245,247,251,.62);
+  --hair:rgba(255,255,255,.13);
+  --glass:rgba(255,255,255,.075);
+  --glass2:rgba(255,255,255,.105);
+  --blue:#74a7ff;
+  --violet:#b98cff;
+  --amber:#ffd18a;
+  --green:#8ef0c2;
+  --danger:#ff7f9c;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bottom:env(safe-area-inset-bottom);
+  --radius:30px;
+  --shadow:0 30px 90px rgba(0,0,0,.42);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,Segoe UI,sans-serif;color:var(--text);overflow:hidden}
+body{
+  background:
+    radial-gradient(circle at 18% 8%, rgba(116,167,255,.19), transparent 34%),
+    radial-gradient(circle at 88% 18%, rgba(185,140,255,.16), transparent 30%),
+    radial-gradient(circle at 45% 105%, rgba(255,209,138,.08), transparent 38%),
+    linear-gradient(145deg,#03040a 0%,#07101d 48%,#05060c 100%);
+}
+.app{
+  position:relative;height:100%;width:100%;overflow:hidden;
+  padding:calc(18px + var(--safe-top)) 18px calc(18px + var(--safe-bottom));
+}
+.aura-bg{position:absolute;inset:-25%;pointer-events:none;filter:blur(2px);opacity:.9}
+.orb{position:absolute;border-radius:999px;filter:blur(24px);opacity:.42;animation:float 14s ease-in-out infinite alternate}
+.orb.one{width:360px;height:360px;background:rgba(116,167,255,.30);left:-100px;top:-70px}
+.orb.two{width:300px;height:300px;background:rgba(185,140,255,.22);right:-90px;top:130px;animation-delay:-4s}
+.orb.three{width:280px;height:280px;background:rgba(255,209,138,.12);left:40%;bottom:-120px;animation-delay:-8s}
+@keyframes float{to{transform:translate3d(36px,54px,0) scale(1.08)}}
+.screen{position:relative;height:100%;display:flex;flex-direction:column;gap:18px;z-index:2}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 0}
+.brand-kicker{font-size:13px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.brand{font-size:34px;line-height:1;font-weight:750;letter-spacing:-.055em;margin-top:6px}
+.tagline{font-size:15px;color:var(--muted);margin-top:8px;letter-spacing:-.015em}
+.pill{
+  border:1px solid var(--hair);background:rgba(255,255,255,.06);backdrop-filter:blur(22px);
+  border-radius:999px;padding:10px 13px;color:rgba(255,255,255,.78);font-size:13px;
+  box-shadow:0 12px 34px rgba(0,0,0,.2)
+}
+.hero{
+  margin-top:4px;padding:24px;border:1px solid var(--hair);border-radius:var(--radius);
+  background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));
+  backdrop-filter:blur(28px);box-shadow:var(--shadow);position:relative;overflow:hidden;min-height:170px;
+}
+.hero:before{
+  content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 20% 10%,rgba(255,255,255,.16),transparent 24%),
+  linear-gradient(115deg,transparent,rgba(255,255,255,.09),transparent);
+  opacity:.75;pointer-events:none;
+}
+.hero h1{position:relative;margin:0;font-size:35px;line-height:.98;letter-spacing:-.07em;font-weight:780;max-width:330px}
+.hero p{position:relative;margin:16px 0 0;color:rgba(245,247,251,.68);font-size:15px;line-height:1.45;max-width:330px}
+.status-row{position:relative;margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.status-chip{border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);border-radius:999px;padding:9px 11px;font-size:12px;color:rgba(255,255,255,.78)}
+.section-title{display:flex;align-items:flex-end;justify-content:space-between;margin:2px 2px -4px}
+.section-title h2{font-size:18px;letter-spacing:-.035em;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;overflow:auto;padding:8px 1px 120px;margin:0 -1px;scrollbar-width:none}
+.grid::-webkit-scrollbar{display:none}
+.card{
+  min-height:154px;border:1px solid var(--hair);border-radius:27px;padding:16px;overflow:hidden;position:relative;
+  background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.04));
+  backdrop-filter:blur(24px);box-shadow:0 18px 45px rgba(0,0,0,.24);
+  display:flex;flex-direction:column;justify-content:space-between;transition:transform .25s ease, background .25s ease, border-color .25s ease;
+}
+.card:active{transform:scale(.975)}
+.card:before{content:"";position:absolute;width:132px;height:132px;border-radius:999px;right:-48px;top:-48px;background:var(--accent);opacity:.22;filter:blur(10px)}
+.card:after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.12),transparent 42%);opacity:.55}
+.card > *{position:relative;z-index:1}
+.icon{width:40px;height:40px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:grid;place-items:center;font-size:19px}
+.card h3{margin:0;font-size:18px;letter-spacing:-.035em}
+.card p{margin:6px 0 0;font-size:12.5px;line-height:1.35;color:rgba(245,247,251,.61)}
+.card .tiny{font-size:11px;color:rgba(245,247,251,.45);letter-spacing:.03em;text-transform:uppercase}
+.bottom-dock{
+  position:absolute;z-index:5;left:18px;right:18px;bottom:calc(12px + var(--safe-bottom));
+  border:1px solid rgba(255,255,255,.13);background:rgba(10,13,22,.68);backdrop-filter:blur(30px);
+  border-radius:28px;padding:10px;display:flex;gap:8px;box-shadow:0 24px 70px rgba(0,0,0,.45)
+}
+.dock-btn{flex:1;border:0;border-radius:20px;background:transparent;color:rgba(255,255,255,.62);font:600 12px -apple-system,BlinkMacSystemFont,sans-serif;padding:12px 4px}
+.dock-btn.active{background:rgba(255,255,255,.105);color:#fff}
+.mode{
+  position:absolute;inset:0;z-index:20;padding:calc(18px + var(--safe-top)) 18px calc(18px + var(--safe-bottom));
+  background:#05070d;transform:translateY(104%);transition:transform .55s cubic-bezier(.2,.85,.2,1);overflow:hidden;
+}
+.mode.open{transform:translateY(0)}
+.mode-bg{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 40%,var(--mode1),transparent 30%),radial-gradient(circle at 25% 15%,var(--mode2),transparent 24%),linear-gradient(145deg,#03040a,#07101b 55%,#03040a);animation:drift 16s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(-30px,24px,0) scale(1.04)}}
+.rain-layer{position:absolute;inset:0;opacity:0;pointer-events:none;background-image:linear-gradient(115deg,rgba(255,255,255,.0) 0%,rgba(255,255,255,.15) 48%,rgba(255,255,255,0) 52%);background-size:7px 95px;animation:rain .75s linear infinite}
+.mode.rain .rain-layer{opacity:.24}
+@keyframes rain{to{background-position:0 95px}}
+.road-layer{position:absolute;inset:auto 50% -20% 50%;width:240px;height:78%;transform:translateX(-50%);opacity:0;clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);background:linear-gradient(to bottom,rgba(255,209,138,.0),rgba(255,209,138,.17));filter:blur(.4px)}
+.mode.drive .road-layer{opacity:.9}
+.mode-content{position:relative;height:100%;z-index:2;display:flex;flex-direction:column}
+.mode-top{display:flex;justify-content:space-between;align-items:center}
+.close-btn,.sound-btn{
+  border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.075);color:white;border-radius:999px;
+  height:44px;padding:0 15px;font:650 13px -apple-system,BlinkMacSystemFont,sans-serif;backdrop-filter:blur(22px)
+}
+.mode-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;padding-bottom:30px}
+.mode-label{font-size:13px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.54)}
+.clock{font-size:72px;line-height:.9;font-weight:760;letter-spacing:-.085em;text-shadow:0 12px 42px rgba(0,0,0,.35)}
+.mode-title{font-size:30px;letter-spacing:-.06em;font-weight:760}
+.quote{font-size:17px;color:rgba(255,255,255,.7);max-width:310px;line-height:1.45}
+.timer-card{
+  width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.065);border-radius:31px;
+  padding:16px;backdrop-filter:blur(28px);box-shadow:0 24px 70px rgba(0,0,0,.32)
+}
+.timer-main{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.timer-time{font-size:32px;font-weight:760;letter-spacing:-.055em}
+.timer-actions{display:flex;gap:8px}
+.round-btn{border:0;border-radius:17px;padding:12px 15px;color:#06101c;background:#fff;font-weight:750}
+.round-btn.secondary{background:rgba(255,255,255,.105);color:white;border:1px solid rgba(255,255,255,.12)}
+.duration-row{display:flex;gap:8px;margin-top:12px}
+.duration{flex:1;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.16);color:rgba(255,255,255,.72);border-radius:15px;padding:10px 4px;font-weight:650}
+.duration.active{background:rgba(255,255,255,.16);color:white}
+.progress{height:4px;background:rgba(255,255,255,.12);border-radius:999px;margin-top:14px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--violet));border-radius:999px;transition:width .35s linear}
+.sheet{
+  position:absolute;z-index:30;left:0;right:0;bottom:0;padding:20px 18px calc(18px + var(--safe-bottom));
+  transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.85,.2,1);
+  background:rgba(8,10,18,.76);backdrop-filter:blur(34px);border-top:1px solid rgba(255,255,255,.12);border-radius:32px 32px 0 0;
+}
+.sheet.open{transform:translateY(0)}
+.sheet h3{margin:0 0 8px;font-size:22px;letter-spacing:-.05em}
+.sheet p{margin:0;color:var(--muted);line-height:1.45;font-size:14px}
+.builder-preview{margin-top:16px;padding:18px;border-radius:25px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(145deg,rgba(116,167,255,.14),rgba(185,140,255,.08))}
+@media (orientation:landscape){
+  .app{padding-left:calc(22px + env(safe-area-inset-left));padding-right:calc(22px + env(safe-area-inset-right))}
+  .screen{max-width:1120px;margin:auto}
+  .hero{min-height:150px}
+  .grid{grid-template-columns:repeat(3,1fr);padding-bottom:100px}
+  .clock{font-size:86px}
+  .mode-center{padding-bottom:0}
+  .timer-card{max-width:560px;margin:0 auto}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="aura-bg">
+    <div class="orb one"></div><div class="orb two"></div><div class="orb three"></div>
+  </div>
+
+  <main class="screen" id="home">
+    <div class="topbar">
+      <div>
+        <div class="brand-kicker">Premium atmosphere</div>
+        <div class="brand">AuraSpace</div>
+        <div class="tagline">Your mood, your space.</div>
+      </div>
+      <button class="pill" id="builderBtn">Aura Builder</button>
+    </div>
+
+    <section class="hero">
+      <h1>Choose the atmosphere around you.</h1>
+      <p>Focus, calm down, drive into the night or turn your room into a cinematic space.</p>
+      <div class="status-row">
+        <span class="status-chip" id="todayChip">Today · 0 min</span>
+        <span class="status-chip">Apple-style UI</span>
+        <span class="status-chip">v1.0 Preview</span>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>Mood spaces</h2>
+      <span>Tap to enter</span>
+    </div>
+
+    <section class="grid" id="grid"></section>
+
+    <nav class="bottom-dock">
+      <button class="dock-btn active">Spaces</button>
+      <button class="dock-btn" id="statsBtn">Stats</button>
+      <button class="dock-btn" id="soonBtn">Library</button>
+    </nav>
+  </main>
+
+  <section class="mode" id="mode">
+    <div class="mode-bg"></div>
+    <div class="rain-layer"></div>
+    <div class="road-layer"></div>
+    <div class="mode-content">
+      <div class="mode-top">
+        <button class="close-btn" id="closeMode">Close</button>
+        <button class="sound-btn" id="soundBtn">Sound Off</button>
+      </div>
+      <div class="mode-center">
+        <div class="mode-label" id="modeLabel">AuraSpace</div>
+        <div class="clock" id="clock">00:00</div>
+        <div class="mode-title" id="modeTitle">Night Focus</div>
+        <div class="quote" id="modeQuote">Stay quiet. Stay sharp.</div>
+      </div>
+      <div class="timer-card">
+        <div class="timer-main">
+          <div>
+            <div class="mode-label">Focus timer</div>
+            <div class="timer-time" id="timerTime">25:00</div>
+          </div>
+          <div class="timer-actions">
+            <button class="round-btn" id="startTimer">Start</button>
+            <button class="round-btn secondary" id="resetTimer">Reset</button>
+          </div>
+        </div>
+        <div class="duration-row" id="durations">
+          <button class="duration" data-min="15">15</button>
+          <button class="duration active" data-min="25">25</button>
+          <button class="duration" data-min="45">45</button>
+          <button class="duration" data-min="60">60</button>
+        </div>
+        <div class="progress"><i id="progressBar"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="sheet">
+    <h3 id="sheetTitle">Aura Builder</h3>
+    <p id="sheetText">Create your own space with custom colors, ambience, timer and layout. This premium feature is reserved for the next build.</p>
+    <div class="builder-preview">
+      <strong>Coming in v1.1</strong>
+      <p style="margin-top:8px">Custom aura presets, mixed ambience sounds, saved spaces and lock-screen style layout.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const modes = [
+  {id:"night", icon:"◐", title:"Night Focus", sub:"For deep work and silent nights.", tiny:"Focus", accent:"rgba(116,167,255,.95)", m1:"rgba(116,167,255,.34)", m2:"rgba(185,140,255,.18)", quote:"Stay quiet. Stay sharp.", label:"Deep work"},
+  {id:"rain", icon:"⌁", title:"Rain Room", sub:"Soft rain. Clear mind.", tiny:"Calm", accent:"rgba(142,185,255,.95)", m1:"rgba(100,140,190,.30)", m2:"rgba(210,230,255,.13)", quote:"Let the noise fade.", label:"Soft rain"},
+  {id:"calm", icon:"○", title:"Deep Calm", sub:"Slow down your inner noise.", tiny:"Breathe", accent:"rgba(142,240,194,.95)", m1:"rgba(142,240,194,.24)", m2:"rgba(116,167,255,.13)", quote:"Breathe in. Let go.", label:"Inner calm"},
+  {id:"drive", icon:"⌁", title:"Drive Mood", sub:"For late roads and clear thoughts.", tiny:"Road", accent:"rgba(255,209,138,.95)", m1:"rgba(255,209,138,.24)", m2:"rgba(116,167,255,.10)", quote:"The road clears the mind.", label:"Late road"},
+  {id:"cinema", icon:"◇", title:"Cinema Mood", sub:"Turn this moment into a scene.", tiny:"Scene", accent:"rgba(185,140,255,.95)", m1:"rgba(185,140,255,.30)", m2:"rgba(255,209,138,.11)", quote:"Make this moment feel like a scene.", label:"Cinematic"},
+  {id:"sleep", icon:"☾", title:"Sleep Space", sub:"Dim the world. Ease into rest.", tiny:"Rest", accent:"rgba(130,150,210,.95)", m1:"rgba(90,100,170,.25)", m2:"rgba(255,255,255,.08)", quote:"Dim the world. Ease into rest.", label:"Sleep"}
+];
+
+const grid = document.getElementById("grid");
+modes.forEach(m=>{
+  const el=document.createElement("article");
+  el.className="card";
+  el.style.setProperty("--accent", m.accent);
+  el.innerHTML=`<div class="icon">${m.icon}</div><div><div class="tiny">${m.tiny}</div><h3>${m.title}</h3><p>${m.sub}</p></div>`;
+  el.onclick=()=>openMode(m);
+  grid.appendChild(el);
+});
+
+const modeEl=document.getElementById("mode");
+let currentMode=modes[0];
+let timerTotal=25*60, timerLeft=timerTotal, timerRunning=false, timerId=null, sessionStart=null;
+let audioCtx=null, noiseNode=null, gainNode=null, soundOn=false;
+let totalMinutes=Number(localStorage.getItem("aura_total_minutes")||0);
+document.getElementById("todayChip").textContent=`Today · ${totalMinutes} min`;
+
+function openMode(m){
+  currentMode=m;
+  modeEl.className="mode open";
+  if(m.id==="rain") modeEl.classList.add("rain");
+  if(m.id==="drive") modeEl.classList.add("drive");
+  document.documentElement.style.setProperty("--blue", m.accent);
+  modeEl.style.setProperty("--mode1", m.m1);
+  modeEl.style.setProperty("--mode2", m.m2);
+  document.getElementById("modeTitle").textContent=m.title;
+  document.getElementById("modeQuote").textContent=m.quote;
+  document.getElementById("modeLabel").textContent=m.label;
+}
+document.getElementById("closeMode").onclick=()=>{
+  stopTimer(false);
+  stopSound();
+  modeEl.className="mode";
+};
+function updateClock(){
+  const d=new Date();
+  document.getElementById("clock").textContent=d.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
+}
+setInterval(updateClock,1000); updateClock();
+
+function setDuration(min){
+  timerTotal=min*60; timerLeft=timerTotal; timerRunning=false; clearInterval(timerId);
+  document.querySelectorAll(".duration").forEach(b=>b.classList.toggle("active", Number(b.dataset.min)===min));
+  updateTimerUI();
+}
+document.getElementById("durations").onclick=e=>{
+  if(e.target.classList.contains("duration")) setDuration(Number(e.target.dataset.min));
+};
+function updateTimerUI(){
+  const m=Math.floor(timerLeft/60), s=timerLeft%60;
+  document.getElementById("timerTime").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  const done=(timerTotal-timerLeft)/timerTotal*100;
+  document.getElementById("progressBar").style.width=`${done}%`;
+  document.getElementById("startTimer").textContent=timerRunning?"Pause":"Start";
+}
+function startTimer(){
+  if(timerRunning){timerRunning=false; clearInterval(timerId); updateTimerUI(); return;}
+  timerRunning=true; sessionStart=Date.now();
+  timerId=setInterval(()=>{
+    timerLeft--;
+    if(timerLeft<=0){timerLeft=0; stopTimer(true);}
+    updateTimerUI();
+  },1000);
+  updateTimerUI();
+}
+function stopTimer(done){
+  if(sessionStart){
+    const mins=Math.max(0,Math.round((Date.now()-sessionStart)/60000));
+    if(mins>0){totalMinutes+=mins; localStorage.setItem("aura_total_minutes", totalMinutes); document.getElementById("todayChip").textContent=`Today · ${totalMinutes} min`;}
+  }
+  sessionStart=null; timerRunning=false; clearInterval(timerId); updateTimerUI();
+}
+document.getElementById("startTimer").onclick=startTimer;
+document.getElementById("resetTimer").onclick=()=>{stopTimer(false); timerLeft=timerTotal; updateTimerUI();};
+updateTimerUI();
+
+function createNoiseBuffer(ctx){
+  const bufferSize=ctx.sampleRate*2;
+  const buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++) data[i]=(Math.random()*2-1)*0.32;
+  return buffer;
+}
+function startSound(){
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  noiseNode=audioCtx.createBufferSource();
+  noiseNode.buffer=createNoiseBuffer(audioCtx);
+  noiseNode.loop=true;
+  const filter=audioCtx.createBiquadFilter();
+  filter.type=currentMode.id==="rain"?"bandpass":"lowpass";
+  filter.frequency.value=currentMode.id==="rain"?950:260;
+  gainNode=audioCtx.createGain();
+  gainNode.gain.value=currentMode.id==="drive"?.035:.055;
+  noiseNode.connect(filter); filter.connect(gainNode); gainNode.connect(audioCtx.destination);
+  noiseNode.start();
+  soundOn=true;
+  document.getElementById("soundBtn").textContent="Sound On";
+}
+function stopSound(){
+  try{if(noiseNode) noiseNode.stop(); if(audioCtx) audioCtx.close();}catch(e){}
+  soundOn=false; noiseNode=null; audioCtx=null;
+  document.getElementById("soundBtn").textContent="Sound Off";
+}
+document.getElementById("soundBtn").onclick=()=> soundOn?stopSound():startSound();
+
+const sheet=document.getElementById("sheet");
+function openSheet(title,text){
+  document.getElementById("sheetTitle").textContent=title;
+  document.getElementById("sheetText").textContent=text;
+  sheet.classList.add("open");
+  setTimeout(()=>document.addEventListener("click",outsideSheet,{once:true}),0);
+}
+function outsideSheet(e){ if(!sheet.contains(e.target)) sheet.classList.remove("open"); else document.addEventListener("click",outsideSheet,{once:true});}
+document.getElementById("builderBtn").onclick=()=>openSheet("Aura Builder","Create your own space with custom colors, ambience, timer and layout. This premium feature is reserved for the next build.");
+document.getElementById("statsBtn").onclick=()=>openSheet("Stats","Your total focus time is saved locally on this device. Full weekly charts and mood history will arrive in the next build.");
+document.getElementById("soonBtn").onclick=()=>openSheet("Library","Aura Library will include premium ambience packs: rain glass, night city, deep ocean, soft space, fireplace and late road.");
+</script>
+</body>
+</html>
