@@ -113,7 +113,7 @@ body{
         <div class="logo">AuraSpace</div>
         <div class="slogan">Your mood, your space.</div>
       </div>
-      <button class="version" id="versionBtn">v1.0.4</button>
+      <button class="version" id="versionBtn">v1.0.5</button>
     </header>
 
     <section class="hero">
@@ -201,12 +201,12 @@ body{
 
 <script>
 const modes=[
-{id:"night",icon:"◐",title:"Night Focus",sub:"Deep work and silent nights.",tiny:"Focus",accent:"rgba(128,173,255,.95)",m1:"rgba(128,173,255,.34)",m2:"rgba(188,146,255,.18)",quote:"Stay quiet. Stay sharp.",label:"Deep work",sound:"sounds/night-air.wav",soundName:"Night Air"},
-{id:"rain",icon:"⌁",title:"Rain Room",sub:"Soft rain. Clear mind.",tiny:"Calm",accent:"rgba(145,186,255,.95)",m1:"rgba(100,140,190,.30)",m2:"rgba(210,230,255,.13)",quote:"Let the noise fade.",label:"Soft rain",sound:"sounds/rain-glass.wav",soundName:"Rain Glass"},
-{id:"calm",icon:"○",title:"Deep Calm",sub:"Slow down your inner noise.",tiny:"Breathe",accent:"rgba(146,240,199,.95)",m1:"rgba(146,240,199,.24)",m2:"rgba(128,173,255,.13)",quote:"Breathe in. Let go.",label:"Inner calm",sound:"sounds/deep-space.wav",soundName:"Deep Space"},
-{id:"drive",icon:"⌁",title:"Drive Mood",sub:"Late roads and clear thoughts.",tiny:"Road",accent:"rgba(255,208,138,.95)",m1:"rgba(255,208,138,.24)",m2:"rgba(128,173,255,.10)",quote:"The road clears the mind.",label:"Late road",sound:"sounds/late-road.wav",soundName:"Late Road"},
-{id:"cinema",icon:"◇",title:"Cinema Mood",sub:"Make the moment feel like a scene.",tiny:"Scene",accent:"rgba(188,146,255,.95)",m1:"rgba(188,146,255,.30)",m2:"rgba(255,208,138,.11)",quote:"Make this moment feel like a scene.",label:"Cinematic",sound:"sounds/cinema-drone.wav",soundName:"Cinema Drone"},
-{id:"sleep",icon:"☾",title:"Sleep Space",sub:"Dim the world. Ease into rest.",tiny:"Rest",accent:"rgba(130,150,210,.95)",m1:"rgba(90,100,170,.25)",m2:"rgba(255,255,255,.08)",quote:"Dim the world. Ease into rest.",label:"Sleep",sound:"sounds/sleep-wind.wav",soundName:"Sleep Wind"}
+{id:"night",icon:"◐",title:"Night Focus",sub:"Deep work and silent nights.",tiny:"Focus",accent:"rgba(128,173,255,.95)",m1:"rgba(128,173,255,.34)",m2:"rgba(188,146,255,.18)",quote:"Stay quiet. Stay sharp.",label:"Deep work",sound:"night-air.wav",soundName:"Night Air"},
+{id:"rain",icon:"⌁",title:"Rain Room",sub:"Soft rain. Clear mind.",tiny:"Calm",accent:"rgba(145,186,255,.95)",m1:"rgba(100,140,190,.30)",m2:"rgba(210,230,255,.13)",quote:"Let the noise fade.",label:"Soft rain",sound:"rain-glass.wav",soundName:"Rain Glass"},
+{id:"calm",icon:"○",title:"Deep Calm",sub:"Slow down your inner noise.",tiny:"Breathe",accent:"rgba(146,240,199,.95)",m1:"rgba(146,240,199,.24)",m2:"rgba(128,173,255,.13)",quote:"Breathe in. Let go.",label:"Inner calm",sound:"deep-space.wav",soundName:"Deep Space"},
+{id:"drive",icon:"⌁",title:"Drive Mood",sub:"Late roads and clear thoughts.",tiny:"Road",accent:"rgba(255,208,138,.95)",m1:"rgba(255,208,138,.24)",m2:"rgba(128,173,255,.10)",quote:"The road clears the mind.",label:"Late road",sound:"late-road.wav",soundName:"Late Road"},
+{id:"cinema",icon:"◇",title:"Cinema Mood",sub:"Make the moment feel like a scene.",tiny:"Scene",accent:"rgba(188,146,255,.95)",m1:"rgba(188,146,255,.30)",m2:"rgba(255,208,138,.11)",quote:"Make this moment feel like a scene.",label:"Cinematic",sound:"cinema-drone.wav",soundName:"Cinema Drone"},
+{id:"sleep",icon:"☾",title:"Sleep Space",sub:"Dim the world. Ease into rest.",tiny:"Rest",accent:"rgba(130,150,210,.95)",m1:"rgba(90,100,170,.25)",m2:"rgba(255,255,255,.08)",quote:"Dim the world. Ease into rest.",label:"Sleep",sound:"sleep-wind.wav",soundName:"Sleep Wind"}
 ];
 
 const grid=document.getElementById("grid");
@@ -331,7 +331,7 @@ function outside(e){if(!sheet.contains(e.target))sheet.classList.remove("open");
 
 document.getElementById("ambienceBtn").onclick=()=>openSheet("Ambience Library","AuraSpace now uses real local loop files. Each mood space has its own ambience pack.",`<strong>Sound packs</strong><ul><li>Night Air — minimal focus ambience</li><li>Rain Glass — soft window rain</li><li>Sleep Wind — subtle wind texture</li><li>Late Road — distant road texture</li><li>Deep Space — soft cinematic drone</li><li>Cinema Drone — moody film ambience</li></ul>`);
 document.getElementById("builderBtn").onclick=()=>openSheet("Aura Builder","Create a personal mood space with color, layout, quote style, timer length and ambience pack.",`<strong>Coming in v1.1</strong><ul><li>Saved custom spaces</li><li>Custom gradient themes</li><li>Sound pack selection</li><li>StandBy-style horizontal layout</li></ul>`);
-document.getElementById("versionBtn").onclick=()=>openSheet("AuraSpace v1.0.4","Real ambience loop build. Each mood space now has its own local sound file.",`<strong>Build notes</strong><ul><li>6 local loop sounds added</li><li>Play / pause sound control</li><li>Volume slider added</li><li>Mode-based ambience labels</li></ul>`);
+document.getElementById("versionBtn").onclick=()=>openSheet("AuraSpace v1.0.5","Root sound path fix. Audio files now load directly from the repository main folder.",`<strong>Build notes</strong><ul><li>Root-level sound file support</li><li>Play / pause sound control</li><li>Volume slider added</li><li>Mode-based ambience labels</li></ul>`);
 </script>
 </body>
 </html>
